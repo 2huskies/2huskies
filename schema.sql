@@ -13,6 +13,19 @@ CREATE TABLE IF NOT EXISTS subject (
     name TEXT   NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS specialty (
+    id   SERIAL  PRIMARY KEY,
+	code INTEGER NOT NULL,
+    name TEXT    NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS university (
+    id      SERIAL  PRIMARY KEY,
+    name    TEXT    NOT NULL,
+	active  BOOLEAN DEFAULT TRUE,
+	url     TEXT    NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS score (
     abiturient_id INTEGER NOT NULL,
     subject_id    INTEGER NOT NULL,
@@ -22,3 +35,4 @@ CREATE TABLE IF NOT EXISTS score (
     CONSTRAINT abiturient_fkey FOREIGN KEY (abiturient_id) REFERENCES  abiturient(id) MATCH SIMPLE ON DELETE NO ACTION,
     CONSTRAINT subject_fkey    FOREIGN KEY (subject_id)    REFERENCES  subject(id)    MATCH SIMPLE ON DELETE NO ACTION
 );
+
