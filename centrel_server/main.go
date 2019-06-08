@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -40,9 +41,8 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-	id = id + 1
 
-	query := "SELECT * FROM abiturient"
+	query := fmt.Sprint("SELECT * FROM abiturient WHERE id = %d", id)
 	rows, err := db.Query(query)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
@@ -60,6 +60,7 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 		&abiturient.BirthPlace,
 		&abiturient.Address,
 		&abiturient.PhoneNumber)
+
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
