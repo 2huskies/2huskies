@@ -26,6 +26,7 @@ type Abiturient struct {
 
 type User struct {
 	Role   string `json:"role"`
+	AbiturientID int64 `json:"abiturient_id"`
 }
 
 var db *sql.DB
@@ -107,13 +108,13 @@ func verifyUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	password, err := strconv.ParseInt(params["user"], 10, 64)
+	password, err := strconv.ParseInt(params["password"], 10, 64)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
-	query := fmt.Sprint("SELECT in_role FROM login WHERE login = %s AND password = %s", login, password)
+	query := fmt.Sprint("SELECT in_role, abiturient_id FROM login WHERE login = %s AND password = %s", login, password)
 	rows, err := db.Query(query)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
@@ -123,7 +124,7 @@ func verifyUser(w http.ResponseWriter, r *http.Request) {
 
 	user := new(User)
 	rows.Next()
-	err = rows.Scan(&user.Role)
+	err = rows.Scan(&user.Role, &user.AbiturientID)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
