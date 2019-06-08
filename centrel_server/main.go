@@ -1,8 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	"log"
 	"math/rand"
 	"net/http"
@@ -20,6 +22,7 @@ type Abiturient struct {
 }
 
 var abiturients []Abiturient
+var db *sql.DB
 
 func getAbiturients(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -29,13 +32,37 @@ func getAbiturients(w http.ResponseWriter, r *http.Request) {
 func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
-	for _, item := range abiturients {
-		if item.ID == params["id"] {
-			json.NewEncoder(w).Encode(item)
-			return
-		}
+	id, err := strconv.ParseInt(params["id"], 10, 64)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
 	}
-	json.NewEncoder(w).Encode(&Abiturient{})
+	id = id + 1
+
+	//query := fmt.Sprintf("SELECT * FROM abiturient WHERE id = %d;", id)
+	query := "SELECT * FROM abiturient"
+	rows, err := db.Query(query)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	defer rows.Close()
+
+	abiturient := new(Abiturient)
+
+	err = rows.Scan(&abiturient.ID,
+		&abiturient.FirstName,
+		&abiturient.LastName,
+		&abiturient.BirthDate,
+		&abiturient.BirthPlace,
+		&abiturient.Address,
+		&abiturient.PhoneNumber)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	json.NewEncoder(w).Encode(&abiturient)
 }
 
 func createAbiturient(w http.ResponseWriter, r *http.Request) {
@@ -48,12 +75,17 @@ func createAbiturient(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	r := mux.NewRouter()
-	//books = append(books, Book{ID: "1", Title: "Война и Мир", Author: &Author{Firstname: "Лев", Lastname: "Толстой"}})
-	//books = append(books, Book{ID: "2", Title: "Преступление и наказание", Author: &Author{Firstname: "Фёдор", Lastname: "Достоевский"}})
+	var err error
+
+	connStr := "postgres://postgres:admin@localhost/postgres?sslmode=verify-full"
+	db, err = sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	abiturients = append(abiturients, Abiturient{ID: "1", FirstName: "Cris"})
 
+	r := mux.NewRouter()
 	r.HandleFunc("/abiturient", getAbiturients).Methods("GET")
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
 	r.HandleFunc("/books", createAbiturient).Methods("POST")
