@@ -46,9 +46,20 @@ CREATE TABLE IF NOT EXISTS score (
     CONSTRAINT subject_fkey    FOREIGN KEY (subject_id)    REFERENCES  subject(id)    MATCH SIMPLE ON DELETE NO ACTION
 );
 
+CREATE TABLE IF NOT EXISTS doc_type(
+    id   SERIAL PRIMARY KEY,
+	name TEXT   NOT NULL,
+	code text   NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS document (
     id   SERIAL PRIMARY KEY,
 	name TEXT   NOT NULL,
-    data BYTEA  NOT NULL
+    data BYTEA  NOT NULL,
+	type_id INTEGER NOT NULL,
+	abiturient_id INTEGER NOT NULL,
+	
+	CONSTRAINT subject_fkey    FOREIGN KEY (type_id)    REFERENCES  doc_type(id)    MATCH SIMPLE ON DELETE NO ACTION,
+	CONSTRAINT abiturient_fkey FOREIGN KEY (abiturient_id) REFERENCES  abiturient(id) MATCH SIMPLE ON DELETE NO ACTION
 );
 

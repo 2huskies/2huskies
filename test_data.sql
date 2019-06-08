@@ -40,3 +40,14 @@ INSERT INTO public.university(
 	('Московский физико-технический институт', true, 'localhost:3084', 'МФТИ', 612),
 	('Национальный исследовательский университет "Высшая школа экономики"', true, 'localhost:3085', 'НИУ ВШЭ', 606),
 	('Университет "Лютик"', false, 'localhost:3085', 'У Лютик', NULL);
+	
+INSERT INTO public.doc_type(
+	name, code)
+	VALUES ('Документ удостоверяющий личность', 'ДУЛ'),
+	('Документ об образовании', 'ДОО'),
+	('Дополнительные документы', 'ДД');
+	
+INSERT INTO public.document(
+	name, data, type_id, abiturient_id)
+	VALUES ('attetst.jpg', 'werwerwer', 2, 1),
+	('olymp.jpg', 'werwerwer', 3, 1);
