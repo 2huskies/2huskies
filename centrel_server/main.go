@@ -42,7 +42,6 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	}
 	id = id + 1
 
-	//query := fmt.Sprintf("SELECT * FROM abiturient WHERE id = %d;", id)
 	query := "SELECT * FROM abiturient"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -53,6 +52,7 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 
 	abiturient := new(Abiturient)
 
+	rows.Next()
 	err = rows.Scan(&abiturient.ID,
 		&abiturient.FirstName,
 		&abiturient.LastName,
@@ -84,7 +84,7 @@ type config struct {
 
 var conf = &config{
 	Bind:   ":3081",
-	DBConn: "postgres://postgres:admin@localhost/postgres?sslmode=verify-full",
+	DBConn: "postgres://postgres:admin@localhost/postgres?sslmode=disable",
 }
 
 var conffile string
