@@ -36,3 +36,9 @@ CREATE TABLE IF NOT EXISTS score (
     CONSTRAINT subject_fkey    FOREIGN KEY (subject_id)    REFERENCES  subject(id)    MATCH SIMPLE ON DELETE NO ACTION
 );
 
+CREATE TABLE IF NOT EXISTS document (
+    id   SERIAL PRIMARY KEY,
+	name TEXT   NOT NULL,
+    data BYTEA  NOT NULL
+);
+
