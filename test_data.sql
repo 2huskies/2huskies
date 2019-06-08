@@ -2,7 +2,9 @@ INSERT INTO public.specialty(
 	code, name)
 	VALUES ('240801', 'Машины и аппараты химических производств'),
 	('260601', 'Технология швейных изделий'),
-	('260902', 'Конструирование швейных изделий');
+	('260902', 'Конструирование швейных изделий'),
+	('010501', 'Фундаментальная математика и механика'),
+	('010302', 'Прикладная математика и информатика');
 	
 INSERT INTO public.abiturient(
 	first_name, last_last, birth_date, birth_place, address, phone_number, middle_name)
@@ -72,3 +74,12 @@ INSERT INTO public.login(
 	('login1', 'user', 'pass', 2),
 	('login3', 'user', 'pass', 3),
 	('login4', 'admin', 'pass', NULL);
+	
+INSERT INTO public.pass_score(
+	university_id, subject_id, specialty_id, pass_score)
+	VALUES (1, '22', '010501', 69),
+	(1, '03', '010501', 69),
+	(1, '05', '010501', 69),
+	(2, '03', '240801', 75),
+	(2, '22', '240801', 69),
+	(3, '22', '010501', 69);
