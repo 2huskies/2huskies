@@ -24,6 +24,10 @@ type Abiturient struct {
 	PhoneNumber string `json:"phone_number"`
 }
 
+type User struct {
+	Role   string `json:"role"`
+}
+
 var db *sql.DB
 
 func getAbiturients(w http.ResponseWriter, r *http.Request) {
@@ -91,6 +95,43 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(&abiturient)
 }
+
+
+func verifyUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	login, err := strconv.ParseInt(params["user"], 10, 64)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	password, err := strconv.ParseInt(params["user"], 10, 64)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	query := fmt.Sprint("SELECT in_role FROM login WHERE login = %s AND password = %s", login, password)
+	rows, err := db.Query(query)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	defer rows.Close()
+
+	user := new(User)
+	rows.Next()
+	err = rows.Scan(&user.Role)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	json.NewEncoder(w).Encode(&user)
+}
+
 
 type config struct {
 	Bind   string

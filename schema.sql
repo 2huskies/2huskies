@@ -1,20 +1,19 @@
 CREATE TABLE IF NOT EXISTS abiturient (
     id           SERIAL PRIMARY KEY,
     first_name   TEXT   NOT NULL,
+    middle_name  TEXT,
     last_last    TEXT   NOT NULL,
     birth_date   DATE   NOT NULL,
     birth_place  TEXT   NOT NULL,  
     address      TEXT   NOT NULL,   
-    phone_number TEXT   NOT NULL,
-    middle_name text
+    phone_number TEXT   NOT NULL
 );
 
---Роль abiturient и роль admin
-create table if not exists login (
-    login varchar(20) primary key not null,
-    in_role varchar(20) not null,
-    password varchar(30) not null,
-    abiturient_id int null
+CREATE TABLE IF NOT EXISTS login (
+    login         VARCHAR(20) PRIMARY KEY NOT NULL,
+    in_role       VARCHAR(20) NOT NULL,
+    password      VARCHAR(30) NOT NULL,
+    abiturient_id INTEGER NULL
 );
 
 -- Справочник предметов ЕГЭ
