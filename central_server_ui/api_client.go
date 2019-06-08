@@ -38,7 +38,7 @@ func (a *ApiClient) check_user(username string, password string) (bool, err) {
 		return false, err
 	}
 	reader := bytes.NewBuffer(buf)
-	req, err := a.NewRequest("POST", reader)
+	req, err := a.NewRequest("POST", "check_user", reader)
 	if err != nil {
 		return false, err
 	}
