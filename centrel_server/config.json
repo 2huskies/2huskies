@@ -1,0 +1,4 @@
+{
+    "Bind": ":3081",
+    "DBConn": "user=postgres password=postgres dbname=aaa sslmode=disable"
+}

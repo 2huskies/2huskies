@@ -31,13 +31,13 @@ type UserCheck struct {
 	Password string
 }
 
-func (a *ApiClient) check_user(username string, password string) (bool, err) {
+func (a *ApiClient) check_user(username string, password string) (bool, error) {
 	uc := UserCheck{username, password}
 	buf, err := json.Marshal(uc)
 	if err != nil {
 		return false, err
 	}
-	reader := bytes.NewBuffer(buf)
+	reader := bytes.NewReader(buf)
 	req, err := a.NewRequest("POST", "check_user", reader)
 	if err != nil {
 		return false, err
@@ -52,7 +52,7 @@ func (a *ApiClient) check_user(username string, password string) (bool, err) {
 	return resp.StatusCode == 200, nil
 }
 
-func (a *ApiClient) NewRequest(method string, path string, body *io.Reader) (*http.Request, error) {
+func (a *ApiClient) NewRequest(method string, path string, body io.Reader) (*http.Request, error) {
 	u := &url.URL{
 		Scheme: a.URL.Scheme,
 		Host:   a.URL.Host,

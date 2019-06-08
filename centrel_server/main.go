@@ -22,6 +22,7 @@ type Abiturient struct {
 	BirthPlace  string `json:"birth_place"`
 	Address     string `json:"address"`
 	PhoneNumber string `json:"phone_number"`
+	MiddleName  string `json:"middle_name"`
 }
 
 type User struct {
@@ -51,7 +52,9 @@ func getAbiturients(w http.ResponseWriter, r *http.Request) {
 			&abiturient.BirthDate,
 			&abiturient.BirthPlace,
 			&abiturient.Address,
-			&abiturient.PhoneNumber)
+			&abiturient.PhoneNumber,
+			&abiturient.MiddleName,
+		)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,14 +69,14 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.ParseInt(params["id"], 10, 64)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("%s: %s", http.StatusText(500), err), 500)
 		return
 	}
 
-	query := fmt.Sprint("SELECT * FROM abiturient WHERE id = %d", id)
+	query := fmt.Sprintf("SELECT * FROM abiturient WHERE id = %d", id)
 	rows, err := db.Query(query)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("query: %s: %s", http.StatusText(500), err), 500)
 		return
 	}
 	defer rows.Close()
@@ -87,16 +90,17 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 		&abiturient.BirthDate,
 		&abiturient.BirthPlace,
 		&abiturient.Address,
-		&abiturient.PhoneNumber)
+		&abiturient.PhoneNumber,
+		&abiturient.MiddleName,
+	)
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("scan: %s: %s", http.StatusText(500), err), 500)
 		return
 	}
 
 	json.NewEncoder(w).Encode(&abiturient)
 }
-
 
 func verifyUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -132,7 +136,6 @@ func verifyUser(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(&user)
 }
-
 
 type config struct {
 	Bind   string
@@ -172,5 +175,6 @@ func main() {
 	//r.HandleFunc("/books", createAbiturient).Methods("POST")
 
 	log.Printf("listening: %s", conf.Bind)
+	log.Printf("db: %s", conf.DBConn)
 	log.Fatal(http.ListenAndServe(conf.Bind, r))
 }
