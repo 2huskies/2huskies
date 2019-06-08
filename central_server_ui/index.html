@@ -1,1 +1,46 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="css/libs/vuetify.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta charset="utf-8">
+</head>
+<body>
+<div id="app">
+    <v-app>
+        <v-toolbar>
+            <v-toolbar-title class="headline text-uppercase">
+                <span class="blue-s">А</span>битур
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-list-tile-avatar>
+                <img :src="profile.avatar">
+            </v-list-tile-avatar>
+            <div id="fio">{{ profile.fio }}</div>
+        </v-toolbar>
+        <v-content id="main-content">
+            <v-list id="mainmenu">
+                <v-list-tile
+                        v-for="(link, index) in menuLinks"
+                        :key="index"
+                        :href="link.href"
+                >
+                    <v-list-tile-title>{{ link.text }}</v-list-tile-title>
+                </v-list-tile>
+            </v-list>
+
+            <v-container>Content</v-container>
+        </v-content>
+    </v-app>
+</div>
+
+<script src="js/libs/vue.js"></script>
+<script src="js/libs/vuetify.js"></script>
+<script src="js/script.js"></script>
+<script>
+    new Vue({ el: '#app' })
+</script>
+</body>
+</html>
