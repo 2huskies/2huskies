@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS abiturient (
     birth_date   DATE   NOT NULL,
     birth_place  TEXT   NOT NULL,  
     address      TEXT   NOT NULL,   
-    phone_number TEXT   NOT NULL     
+    phone_number TEXT   NOT NULL,
+	middle_name text
 );
 
 CREATE TABLE IF NOT EXISTS subject (
