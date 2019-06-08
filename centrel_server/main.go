@@ -6,7 +6,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -25,11 +24,35 @@ type Abiturient struct {
 	PhoneNumber string `json:"phone_number"`
 }
 
-var abiturients []Abiturient
 var db *sql.DB
 
 func getAbiturients(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	query := "SELECT * FROM abiturient;"
+	rows, err := db.Query(query)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+	defer rows.Close()
+
+	abiturients := make([]*Abiturient, 0)
+	for rows.Next() {
+		abiturient := new(Abiturient)
+		err = rows.Scan(&abiturient.ID,
+			&abiturient.FirstName,
+			&abiturient.LastName,
+			&abiturient.BirthDate,
+			&abiturient.BirthPlace,
+			&abiturient.Address,
+			&abiturient.PhoneNumber)
+		if err != nil {
+			log.Fatal(err)
+		}
+		abiturients = append(abiturients, abiturient)
+	}
+
 	json.NewEncoder(w).Encode(abiturients)
 }
 
@@ -69,15 +92,6 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&abiturient)
 }
 
-func createAbiturient(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var abiturient Abiturient
-	_ = json.NewDecoder(r.Body).Decode(&abiturient)
-	abiturient.ID = strconv.Itoa(rand.Intn(1000000))
-	abiturients = append(abiturients, abiturient)
-	json.NewEncoder(w).Encode(abiturients)
-}
-
 type config struct {
 	Bind   string
 	DBConn string
@@ -110,12 +124,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	abiturients = append(abiturients, Abiturient{ID: "1", FirstName: "Cris"})
-
 	r := mux.NewRouter()
 	r.HandleFunc("/abiturient", getAbiturients).Methods("GET")
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
-	r.HandleFunc("/books", createAbiturient).Methods("POST")
+	//r.HandleFunc("/books", createAbiturient).Methods("POST")
 
 	log.Printf("listening: %s", conf.Bind)
 	log.Fatal(http.ListenAndServe(conf.Bind, r))
