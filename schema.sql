@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS subject (
 );
 
 CREATE TABLE IF NOT EXISTS specialty (
-    id   SERIAL  PRIMARY KEY,
-	code INTEGER NOT NULL,
+    code TEXT  PRIMARY KEY,
     name TEXT    NOT NULL
 );
 
