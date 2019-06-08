@@ -16,7 +16,11 @@ var (
 
 type App struct {
 	IndexHandler *IndexHandler
+	LoginHandler *LoginHandler
 }
+
+var api *ApiClient
+var apiURL string
 
 func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	var head string
@@ -28,6 +32,9 @@ func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	case "ping":
 		res.Write([]byte("pong"))
 		return
+	case "login":
+		a.LoginHandler.ServeHTTP(res, req)
+		return
 	case "html", "js", "css", "fonts":
 		http.FileServer(http.Dir(head)).ServeHTTP(res, req)
 		return
@@ -38,11 +45,17 @@ func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 func main() {
 	flag.StringVar(&bind, "b", ":3080", "`адрес:порт` на котором слушать запросы")
+	flag.StringVar(&apiURL, "api", "http://localhost:3081", "`URL` сервиса REST API")
 	flag.Parse()
 
 	var err error
+	api, err = newApiClient(apiURL)
+	if err != nil {
+		log.Fatalf("%s", err)
+	}
 	a := &App{
 		IndexHandler: new(IndexHandler),
+		LoginHandler: new(LoginHandler),
 	}
 	log.Printf("listening on: %s", bind)
 	mime.AddExtensionType(".js", "text/javascript")

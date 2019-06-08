@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS abiturient (
     middle_name text
 );
 
+--Роль abiturient и роль admin
+create table if not exists login (
+    login varchar(20) primary key not null,
+    in_role varchar(20) not null,
+    password varchar(30) not null,
+    abiturient_id int null
+);
+
 CREATE TABLE IF NOT EXISTS subject (
     id TEXT PRIMARY KEY,
     name TEXT   NOT NULL

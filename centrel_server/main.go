@@ -3,12 +3,15 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"github.com/gorilla/mux"
-	_ "github.com/lib/pq"
+	"flag"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
+
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 )
 
 type Abiturient struct {
@@ -74,10 +77,33 @@ func createAbiturient(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(abiturients)
 }
 
+type config struct {
+	Bind   string
+	DBConn string
+}
+
+var conf = &config{
+	Bind:   ":3081",
+	DBConn: "postgres://postgres:admin@localhost/postgres?sslmode=verify-full",
+}
+
+var conffile string
+
 func main() {
+	flag.StringVar(&conffile, "c", "config.json", "`файл` конфигурации")
+	flag.Parse()
+
+	if _, err := os.Stat(conffile); err == nil {
+		f, _ := os.Open(conffile)
+		dec := json.NewDecoder(f)
+		err = dec.Decode(conf)
+		if err != nil {
+			log.Fatalf("cannot parse config file '%s': %s", conffile, err)
+		}
+	}
 	var err error
 
-	connStr := "postgres://postgres:admin@localhost/postgres?sslmode=verify-full"
+	connStr := conf.DBConn
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
@@ -90,5 +116,6 @@ func main() {
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
 	r.HandleFunc("/books", createAbiturient).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(":3081", r))
+	log.Printf("listening: %s", conf.Bind)
+	log.Fatal(http.ListenAndServe(conf.Bind, r))
 }
