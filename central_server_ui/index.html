@@ -1,37 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link href="css/libs/vuetify.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta charset="utf-8">
 </head>
 <body>
 <div id="app">
     <v-app>
-        <v-toolbar>
+        <v-toolbar id="top-toolbar">
             <v-toolbar-title class="headline text-uppercase">
                 <span class="blue-s">А</span>битур
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-list-tile-avatar>
+            <v-avatar
+                :size="40"
+                >
                 <img :src="profile.avatar">
-            </v-list-tile-avatar>
-            <div id="fio">{{ profile.fio }}</div>
+            </v-avatar>
+            <div id="fio">{{ profile.name2 + ' ' +  profile.name1 + ' ' + profile.name3 }}</div>
         </v-toolbar>
         <v-content id="main-content">
-            <v-list id="mainmenu">
-                <v-list-tile
-                        v-for="(link, index) in menuLinks"
-                        :key="index"
-                        :href="link.href"
-                >
-                    <v-list-tile-title>{{ link.text }}</v-list-tile-title>
-                </v-list-tile>
-            </v-list>
-
-            <v-container>Content</v-container>
+            <v-layout row wrap>
+                <v-flex sm2>
+                    <v-list id="mainmenu">
+                        <v-list-tile
+                                v-for="(link, index) in menuLinks"
+                                :key="index"
+                                :href="link.href"
+                        >
+                            <v-list-tile-title>{{ link.text }}</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+                <v-flex sm10>
+                    <v-layout row class="info-field">
+                        <v-flex class="w220" id="photo"><img :src="profile.photo"></v-flex>
+                        <v-flex class="info-near-photo">
+                            <h4>{{ profile.name2 + ' ' + profile.name1 + ' ' + profile.name3 }}</h4>
+                            <p>Дата рождения: {{ profile.passport.birthday }}</p>
+                            <p>ИНН: {{ profile.inn }}</p>
+                            <p>СНИЛС: {{ profile.snils }}</p>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout>
+                        <h4>Паспортные данные</h4>
+                    </v-layout>
+                    <v-layout class="passport-data">
+                        <v-flex sm2>
+                            Серия и номер<br>
+                            <div class="data-input">{{ profile.passport.passportNumber }}</div>
+                        </v-flex>
+                        <v-flex sm2>
+                            Дата выдачи<br>
+                            <div class="data-input"> {{profile.passport.gettingDate}}</div>
+                        </v-flex>
+                        <v-flex sm2>
+                            Код подразделения<br>
+                            <div class="data-input">{{profile.passport.unitCode}}</div>
+                        </v-flex>
+                        <v-flex sm6>
+                            Кем выдан<br>
+                            <div class="data-input">{{profile.passport.whoGave}}</div>
+                        </v-flex>
+                    </v-layout>
+                </v-flex>
+            </v-layout>
         </v-content>
     </v-app>
 </div>
