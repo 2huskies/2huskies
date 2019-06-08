@@ -51,3 +51,17 @@ INSERT INTO public.document(
 	name, data, type_id, abiturient_id)
 	VALUES ('attetst.jpg', 'werwerwer', 2, 1),
 	('olymp.jpg', 'werwerwer', 3, 1);
+	
+INSERT INTO public.score(
+	abiturient_id, subject_id, score)
+	VALUES (1, '01', 55),
+	(1, '06', 80),
+	(2,'09',1),
+	(2, '10', 80),
+	(2, '11', 100),
+	(2, '13', 10),
+	(2, '14', 15),
+	(2, '18', 66),
+	(3, '18', 96),
+	(3, '22', 93),
+	(3, '03', 84);

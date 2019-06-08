@@ -17,11 +17,13 @@ create table if not exists login (
     abiturient_id int null
 );
 
+-- Справочник предметов ЕГЭ
 CREATE TABLE IF NOT EXISTS subject (
     id TEXT PRIMARY KEY,
     name TEXT   NOT NULL
 );
 
+-- Справочник специальностей в вузах
 CREATE TABLE IF NOT EXISTS specialty (
     code TEXT  PRIMARY KEY,
     name TEXT    NOT NULL
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS university (
 	rate integer DEFAULT NULL
 );
 
+--Результат ЕГЭ абитуриента
 CREATE TABLE IF NOT EXISTS score (
     abiturient_id INTEGER NOT NULL,
     subject_id    TEXT NOT NULL,
