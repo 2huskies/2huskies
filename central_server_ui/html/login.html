@@ -1,0 +1,51 @@
+<html>
+    <head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <h1>login</h1>
+        <form id="login-form">
+	    <textarea id="login"></textarea><br>
+	    <input id="password" type="password"></input><br>
+            <input type="submit"></input>
+        </form>
+        <br>
+        role: <span id="role"></span><br>
+        abiturient_id: <span id="abiturient_id"></span><br>
+        success: <span id="success"></span>
+        debug: <span id="debug"></span>
+        <script>
+	 function submitlogin(e) {
+	     e.preventDefault(); //чтобы не рефрешило страницу 
+	     var req = new XMLHttpRequest();
+	     var result;
+	     req.onreadystatechange = function () {
+		 if (this.readyState === 4) {
+                     if (this.status === 200) {
+                         $('#debug').text(this.responseText);
+		         result = JSON.parse(this.responseText);
+		         $('#role').text(result.role);
+                         $('#abiturient_id').text(result.abiturient_id);
+
+                         $('#success').text("success");
+                     } else {
+                         $('#role').text(this.responseText);
+                         $('#success').text("failed");
+                     }
+		 };
+	     };
+
+	     var reload = "0";
+	     req.open('POST', '/login', true);
+	     req.setRequestHeader("Content-Type", "application/json");
+             login_data = { username: $('#login').val(), password: $('#password').val(), };
+             $("#debug").text(JSON.stringify(login_data));
+	     req.send(JSON.stringify(login_data));
+	     console.log($('#request').text());
+	     return false;
+	 };
+
+	 $('#login-form').on('submit', submitlogin);
+        </script>
+    </body>
+</html>

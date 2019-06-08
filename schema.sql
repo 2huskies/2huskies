@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS abiturient (
 
 CREATE TABLE IF NOT EXISTS login (
     login         VARCHAR(20) PRIMARY KEY NOT NULL,
-    in_role       VARCHAR(20) NOT NULL,
+    role       VARCHAR(20) NOT NULL,
     password      VARCHAR(30) NOT NULL,
     abiturient_id INTEGER NULL
 );

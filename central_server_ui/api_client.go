@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+
+	"github.com/2huskies/structs"
 )
 
 type ApiClient struct {
@@ -26,30 +28,37 @@ func newApiClient(rawurl string) (*ApiClient, error) {
 	return api, nil
 }
 
-type UserCheck struct {
-	UserName string
-	Password string
-}
-
-func (a *ApiClient) check_user(username string, password string) (bool, error) {
-	uc := UserCheck{username, password}
+//return nil, nil means permission denied
+func (a *ApiClient) verify_user(username string, password string) (*structs.UserCheckResult, error) {
+	uc := structs.UserCheck{username, password}
 	buf, err := json.Marshal(uc)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 	reader := bytes.NewReader(buf)
-	req, err := a.NewRequest("POST", "check_user", reader)
+	req, err := a.NewRequest("POST", "verify_user", reader)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
-	//200 OK else false
-	return resp.StatusCode == 200, nil
+	if resp.StatusCode == 401 {
+		return nil, nil
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	dec := json.NewDecoder(resp.Body)
+	result := &structs.UserCheckResult{}
+	err = dec.Decode(result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
 
 func (a *ApiClient) NewRequest(method string, path string, body io.Reader) (*http.Request, error) {

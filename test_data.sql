@@ -69,7 +69,7 @@ INSERT INTO public.score(
 	(3, '03', 84);
 	
 INSERT INTO public.login(
-	login, in_role, password, abiturient_id)
+	login, role, password, abiturient_id)
 	VALUES ('login', 'user', 'pass', 1),
 	('login1', 'user', 'pass', 2),
 	('login3', 'user', 'pass', 3),

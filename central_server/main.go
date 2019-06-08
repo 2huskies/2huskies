@@ -10,25 +10,10 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/2huskies/structs"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
-
-type Abiturient struct {
-	ID          string `json:"id"`
-	FirstName   string `json:"first_name"`
-	LastName    string `json:"last_name"`
-	BirthDate   string `json:"birth_date"`
-	BirthPlace  string `json:"birth_place"`
-	Address     string `json:"address"`
-	PhoneNumber string `json:"phone_number"`
-	MiddleName  string `json:"middle_name"`
-}
-
-type User struct {
-	Role   string `json:"role"`
-	AbiturientID int64 `json:"abiturient_id"`
-}
 
 var db *sql.DB
 
@@ -43,9 +28,9 @@ func getAbiturients(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	abiturients := make([]*Abiturient, 0)
+	abiturients := make([]*structs.Abiturient, 0)
 	for rows.Next() {
-		abiturient := new(Abiturient)
+		abiturient := new(structs.Abiturient)
 		err = rows.Scan(&abiturient.ID,
 			&abiturient.FirstName,
 			&abiturient.LastName,
@@ -81,7 +66,7 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	abiturient := new(Abiturient)
+	abiturient := new(structs.Abiturient)
 
 	rows.Next()
 	err = rows.Scan(&abiturient.ID,
@@ -104,33 +89,34 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 
 func verifyUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	params := mux.Vars(r)
-	login, err := strconv.ParseInt(params["user"], 10, 64)
+	dec := json.NewDecoder(r.Body)
+	uc := &structs.UserCheck{}
+	err := dec.Decode(uc)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("%s: %s", http.StatusText(500), err), 500)
 		return
 	}
 
-	password, err := strconv.ParseInt(params["password"], 10, 64)
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
+	log.Printf("verifyUser data: %v", uc)
 
-	query := fmt.Sprint("SELECT in_role, abiturient_id FROM login WHERE login = %s AND password = %s", login, password)
+	query := fmt.Sprintf("SELECT role, abiturient_id FROM login WHERE login = '%s' AND password = '%s'", uc.UserName, uc.Password)
 	rows, err := db.Query(query)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("query %s: %s", http.StatusText(500), err), 500)
+		log.Printf("query: %s", err)
 		return
 	}
 	defer rows.Close()
 
-	user := new(User)
-	rows.Next()
+	user := new(structs.UserCheckResult)
+	if !rows.Next() {
+		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+		return
+	}
 	err = rows.Scan(&user.Role, &user.AbiturientID)
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		http.Error(w, fmt.Sprintf("%s: %s", http.StatusText(500), err), 500)
+		log.Printf("%s", err)
 		return
 	}
 
@@ -172,6 +158,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/abiturient", getAbiturients).Methods("GET")
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
+	r.HandleFunc("/verify_user", verifyUser).Methods("POST")
 	//r.HandleFunc("/books", createAbiturient).Methods("POST")
 
 	log.Printf("listening: %s", conf.Bind)

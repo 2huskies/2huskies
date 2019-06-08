@@ -1,4 +1,6 @@
 # Binaries for programs and plugins
+central_server/central_server
+central_server_ui/central_server_ui
 *.exe
 *.exe~
 *.dll
