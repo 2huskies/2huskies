@@ -6,11 +6,11 @@ CREATE TABLE IF NOT EXISTS abiturient (
     birth_place  TEXT   NOT NULL,  
     address      TEXT   NOT NULL,   
     phone_number TEXT   NOT NULL,
-	middle_name text
+    middle_name text
 );
 
 CREATE TABLE IF NOT EXISTS subject (
-    id   SERIAL PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     name TEXT   NOT NULL
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS university (
 
 CREATE TABLE IF NOT EXISTS score (
     abiturient_id INTEGER NOT NULL,
-    subject_id    INTEGER NOT NULL,
+    subject_id    TEXT NOT NULL,
     score         INTEGER CHECK (score >= 0 AND score <= 100),
 	
     PRIMARY KEY (abiturient_id, subject_id),
