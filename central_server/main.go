@@ -68,7 +68,10 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 
 	abiturient := new(structs.Abiturient)
 
-	rows.Next()
+	if !rows.Next() {
+		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
 	err = rows.Scan(&abiturient.ID,
 		&abiturient.FirstName,
 		&abiturient.LastName,
