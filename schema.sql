@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS university (
     id      SERIAL  PRIMARY KEY,
     name    TEXT    NOT NULL,
 	active  BOOLEAN DEFAULT TRUE,
-	url     TEXT    NOT NULL
+	url     TEXT    NOT NULL,
+	short_name TEXT,
+	rate integer DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS score (
