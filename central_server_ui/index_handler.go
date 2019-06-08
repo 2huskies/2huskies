@@ -9,6 +9,6 @@ type IndexHandler struct {
 }
 
 func (h *IndexHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	buf, _ := ioutil.ReadFile("html/index.html")
+	buf, _ := ioutil.ReadFile("index.html")
 	_, _ = res.Write(buf)
 }
