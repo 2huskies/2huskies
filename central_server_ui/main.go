@@ -1,7 +1,6 @@
 package main
 
 import (
-	"17bit/calc/httputil"
 	"flag"
 	"log"
 	"mime"
@@ -21,7 +20,7 @@ type App struct {
 
 func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	var head string
-	head, req.URL.Path = httputil.ShiftPath(req.URL.Path)
+	head, req.URL.Path = ShiftPath(req.URL.Path)
 	switch head {
 	case "":
 		a.IndexHandler.ServeHTTP(res, req)
