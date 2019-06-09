@@ -1,5 +1,7 @@
 body {font-family: "RalewayMedium", Arial, serif;font-size:16px;}
-.blue-s {color: #1A83FF;}
+#top-logo{width:128px;}
+
+
 
 #mainmenu{width:200px;margin-top:20px;}
 #main-content{background: #fff;width:1280px;margin:auto;}
@@ -7,8 +9,15 @@ body {font-family: "RalewayMedium", Arial, serif;font-size:16px;}
 .v-avatar{margin:10px 20px;}
 .info-field {margin:20px auto;}
 #photo {width:200px;height:200px;}
-.passport-data{margin:20px 0;font-size:12px;color:#666666;}
-.data-input {border:1px solid #999;border-radius: 5px;height:48px;padding:12px 20px;margin-right:20px;color:#666666;font-size:16px;}
+.personal-data{margin:20px 0;font-size:12px;color:#666666;}
+.personal-data .v-btn{margin-top:20px;text-transform: none;font-size:16px;border-radius: 5px;height:46px;font-family: "RalewayMedium", Arial, serif;letter-spacing: 1px;}
+.data-input {border:1px solid #999;border-radius: 5px;min-height:48px;padding:12px 20px;margin-right:20px;color:#666666;font-size:16px;}
+input.data-input {width:100%;max-width:1048px;}
+#phone-confirmation {margin-top:35px;font-size:14px;color:#0B8400;}
+#phone-confirmation img {margin-right:9px;}
+#save-personal-data {width:100%;margin:0;}
+#load-school-doc{}
+
 #top-toolbar .v-toolbar__content{max-width:1280px;margin:auto;}
 
 .application--wrap{background:#fff;}
@@ -18,3 +27,7 @@ h4 {line-height: 33px;font-size:18px;font-weight:bold;font-family: "RalewayMediu
 
 
 
+
+#bottom-content{width:1280px;margin:auto;font-size: 12px;}
+#bottom-logo{width:72px;}
+#copyright{float:left;margin:0 20px;font-size: 14px;}

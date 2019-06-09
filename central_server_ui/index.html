@@ -13,7 +13,7 @@
     <v-app>
         <v-toolbar id="top-toolbar">
             <v-toolbar-title class="headline text-uppercase">
-                <span class="blue-s">А</span>битур
+                <img src="html/img/logo-abitur.svg" alt="Абитур" id="top-logo">
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-avatar
@@ -49,7 +49,7 @@
                     <v-layout>
                         <h4>Паспортные данные</h4>
                     </v-layout>
-                    <v-layout class="passport-data">
+                    <v-layout class="personal-data">
                         <v-flex sm2>
                             Серия и номер<br>
                             <div class="data-input">{{ profile.passport.passportNumber }}</div>
@@ -67,17 +67,129 @@
                             <div class="data-input">{{profile.passport.whoGave}}</div>
                         </v-flex>
                     </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm8>
+                            Адрес регистрации<br>
+                            <div class="data-input">{{profile.passport.registrationAddress}}</div>
+                        </v-flex>
+                        <v-flex sm4>
+                            Место рождения<br>
+                            <div class="data-input">{{profile.passport.birthPlace}}</div>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout>
+                        <h4>Контактные данные</h4>
+                    </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm3>
+                            Контактный телефон<br>
+                            <div class="data-input">{{profile.contacts.phone}}</div>
+                        </v-flex>
+                        <v-flex sm3>
+                            <div id="phone-confirmation">
+                                <img src="html/img/v.svg" width="16">Телефон подтверждён
+                            </div>
+                        </v-flex>
+                        <v-flex sm3>
+                            Email<br>
+                            <div class="data-input">{{profile.contacts.email}}</div>
+                        </v-flex>
+                        <v-flex sm3>
+                            <v-btn
+                                    color="red"
+                                    dark
+                                    href="/"
+                            >
+                                Подтвердить
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+
+                    <v-layout>
+                        <h4>Место жительства</h4>
+                    </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm12>
+                            Место жительства<br>
+                            <input class="data-input" type="text" v-model="profile.livingPlace">
+                        </v-flex>
+                    </v-layout>
+
+                    <v-layout class="personal-data">
+                        <v-flex sm12>
+                            Данные о родителях (ФИО, место работы, контактный телефон)<br>
+                            <input class="data-input" type="text" v-model="profile.parentsData">
+                        </v-flex>
+                    </v-layout>
+
+                    <v-layout>
+                        <h4>Информация об образовании</h4>
+                    </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm12>
+                            Информация об учебном заведении<br>
+                            <input class="data-input" type="text" v-model="profile.schoolName">
+                        </v-flex>
+                    </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm3>
+                            Номер документа об образовании<br>
+                            <input class="data-input" type="text" v-model="profile.schoolDocID">
+                        </v-flex>
+                        <v-flex sm3>
+                            <v-btn id="load-school-doc"
+                                    color="red"
+                                    dark
+                                    href="/"
+                            >
+                                Загрузить изображение документа об образовании
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout class="personal-data">
+                        <v-flex sm3>
+                            <v-btn id="save-personal-data"
+                                    color="primary"
+                                    dark
+                                    href="/"
+                            >
+                                Сохранить изменения
+                            </v-btn>
+                        </v-flex>
+                    </v-layout>
+
+
                 </v-flex>
             </v-layout>
         </v-content>
+
+            <v-toolbar id="bottom-toolbar">
+                <div id="bottom-content">
+                    <v-layout>
+                        <v-flex sm2>
+                            <img src="html/img/logo-abitur.svg" id="bottom-logo">
+                        </v-flex>
+                        <v-flex sm6>
+                            <div id="copyright">© Абитур 2019 — подавай документы в ВУЗы онлайн</div>
+                        </v-flex>
+                        <v-flex sm2>
+                            Пользовательское соглашение
+                        </v-flex>
+                        <v-flex sm2>
+                            Условия конфиденциальности
+                        </v-flex>
+
+                    </v-layout>
+                </div>
+            </v-toolbar>
+
     </v-app>
 </div>
 
 <script src="js/libs/vue.js"></script>
+<script src="js/libs/axios.min.js"></script>
 <script src="js/libs/vuetify.js"></script>
 <script src="js/script.js"></script>
-<script>
-    new Vue({ el: '#app' })
-</script>
+
 </body>
 </html>
