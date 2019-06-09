@@ -59,7 +59,11 @@ func getAbiturient(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := fmt.Sprintf("SELECT * FROM abiturient WHERE id = %d", id)
+	query := fmt.Sprintf("SELECT" +
+		" id, first_name, last_last, birth_date, birth_place, address, phone_number, middle_name " +
+		"FROM" +
+		" abiturient " +
+		"WHERE id = %d", id)
 	rows, err := db.Query(query)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("query: %s: %s", http.StatusText(500), err), 500)
@@ -132,7 +136,7 @@ type config struct {
 	DBConn string
 }
 
-var conf = &config{
+	var conf = &config{
 	Bind:   ":3081",
 	DBConn: "postgres://postgres:admin@localhost/postgres?sslmode=disable",
 }
