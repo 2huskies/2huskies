@@ -15,12 +15,13 @@ var (
 )
 
 type App struct {
-	IndexHandler        *IndexHandler
-	LoginHandler        *LoginHandler
-	AbiturientHandler   *AbiturientHandler
-	SubjectsHandler     *SubjectsHandler
-	SpecialtiesHandler  *SpecialtiesHandler
-	UniversitiesHandler *UniversitiesHandler
+	IndexHandler            *IndexHandler
+	LoginHandler            *LoginHandler
+	AbiturientHandler       *AbiturientHandler
+	AbiturientScoresHandler *AbiturientScoresHandler
+	SubjectsHandler         *SubjectsHandler
+	SpecialtiesHandler      *SpecialtiesHandler
+	UniversitiesHandler     *UniversitiesHandler
 }
 
 var api *ApiClient
@@ -41,6 +42,9 @@ func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	case "abiturient":
 		a.AbiturientHandler.ServeHTTP(res, req)
+		return
+	case "abiturient_scores":
+		a.AbiturientScoresHandler.ServeHTTP(res, req)
 		return
 	case "subjects":
 		a.SubjectsHandler.ServeHTTP(res, req)

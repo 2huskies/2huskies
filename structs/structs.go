@@ -47,3 +47,10 @@ type University struct {
 	City      string `json:"city"`
 	Rate      int    `json:"rate"`
 }
+
+type AbiturientScore struct {
+	AbiturientID int64  `json:"abiturient_id"`
+	SubjectID    string `json:"subject_id"`
+	SubjectName  string `json:"subject_name"`
+	Score        int    `json:"score"`
+}

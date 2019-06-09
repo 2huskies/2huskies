@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS specialty (
 );
 
 CREATE TABLE IF NOT EXISTS university (
-    code      TEXT  PRIMARY KEY,
-    name    TEXT    NOT NULL,
+    code TEXT  PRIMARY KEY,
+    name TEXT    NOT NULL,
 	active  BOOLEAN DEFAULT TRUE,
 	url     TEXT    NOT NULL,
 	short_name TEXT,

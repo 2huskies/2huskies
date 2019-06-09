@@ -6,9 +6,9 @@ import (
 	"net/http"
 )
 
-type AbiturientHandler struct{}
+type AbiturientScoresHandler struct{}
 
-func (h *AbiturientHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+func (h *AbiturientScoresHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	//	log.Printf("abiturient handler")
 	if req.Method != "GET" {
 		http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
@@ -24,9 +24,9 @@ func (h *AbiturientHandler) ServeHTTP(res http.ResponseWriter, req *http.Request
 		return
 	}
 
-	result, err := api.getAbiturient(s.getAbiturientID())
+	result, err := api.getAbiturientScores(s.getAbiturientID())
 	if err != nil {
-		http.Error(res, fmt.Sprintf("get abiturient: %s", err), http.StatusBadRequest)
+		http.Error(res, fmt.Sprintf("get abiturient scores: %s", err), http.StatusBadRequest)
 		return
 	}
 	json.NewEncoder(res).Encode(result)

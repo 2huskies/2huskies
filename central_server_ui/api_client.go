@@ -158,6 +158,30 @@ func (a *ApiClient) getUniversities() ([]*structs.Specialty, error) {
 	return universities, nil
 }
 
+func (a *ApiClient) getAbiturientScores(id int64) ([]*structs.AbiturientScore, error) {
+	req, err := a.NewRequest("GET", "abiturient_scores/"+fmt.Sprintf("%d", id), nil)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("api_client getAbiturientScores: %s", req.URL.String())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	dec := json.NewDecoder(resp.Body)
+	result := make([]*structs.AbiturientScore, 0, 30)
+	err = dec.Decode(&result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
 func (a *ApiClient) NewRequest(method string, path string, body io.Reader) (*http.Request, error) {
 	u := &url.URL{
 		Scheme: a.URL.Scheme,

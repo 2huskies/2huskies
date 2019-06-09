@@ -23,6 +23,14 @@
         response: <span id="abiturient-info"></span><br>
         success: <span id="abiturient-success"></span><br>
 
+        <h1>abiturient scores</h1>
+        <form id="abiturient-scores-form">
+            <input type="submit"></input>
+        </form>
+        <br>
+        response: <span id="abiturient-scores-list"></span><br>
+        success: <span id="abiturient-scores-success"></span><br>
+
         <h1>subjects</h1>
         <form id="subjects-form">
             <input type="submit"></input>
@@ -97,6 +105,26 @@
 	     return false;
 	 };
 
+	 function submit_abiturient_scores(e) {
+	     e.preventDefault(); //чтобы не рефрешило страницу 
+	     var req = new XMLHttpRequest();
+	     var result;
+	     req.onreadystatechange = function () {
+		 if (this.readyState === 4) {
+                     if (this.status === 200) {
+                         $('#abiturient-scores-list').text(this.responseText);
+                         $('#abiturient-scores-success').text("success");
+                     } else {
+                         $('#abiturient-scores-success').text("failed " + this.responseText);
+                     }
+		 };
+	     };
+
+	     req.open('GET', '/abiturient_scores', true);
+	     req.send();
+	     return false;
+	 };
+
 	 function submit_subjects(e) {
 	     e.preventDefault(); //чтобы не рефрешило страницу 
 	     var req = new XMLHttpRequest();
@@ -159,6 +187,7 @@
 
 	 $('#login-form').on('submit', submit_login);
 	 $('#abiturient-form').on('submit', submit_abiturient);
+	 $('#abiturient-scores-form').on('submit', submit_abiturient_scores);
 	 $('#subjects-form').on('submit', submit_subjects);
 	 $('#specialties-form').on('submit', submit_specialties);
 	 $('#universities-form').on('submit', submit_universities);
