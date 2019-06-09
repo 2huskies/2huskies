@@ -10,7 +10,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/2huskies/structs"
+	"github.com/2huskies/2huskies/structs"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
@@ -101,7 +101,7 @@ func verifyUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("verifyUser data: %v", uc)
+	log.Printf("Verify user data: %v", uc)
 
 	query := fmt.Sprintf("SELECT role, abiturient_id FROM login WHERE login = '%s' AND password = '%s'", uc.UserName, uc.Password)
 	rows, err := db.Query(query)
@@ -163,7 +163,7 @@ func main() {
 	r.HandleFunc("/abiturient", getAbiturients).Methods("GET")
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
 	r.HandleFunc("/verify_user", verifyUser).Methods("POST")
-	r.HandleFunc("/subjects", getSubjects).Methods("GET")
+	r.HandleFunc("/subjects", 	getSubjects).Methods("GET")
 	r.HandleFunc("/specialties", getSpecialties).Methods("GET")
 	r.HandleFunc("/universities", getUniversities).Methods("GET")
 	r.HandleFunc("/abiturient_scores/{id}", getAbiturientScores).Methods("GET")

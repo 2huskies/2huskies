@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/2huskies/structs"
+	"github.com/2huskies/2huskies/structs"
 	"github.com/gorilla/mux"
 )
 
