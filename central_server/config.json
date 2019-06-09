@@ -1,4 +1,4 @@
 {
     "Bind": ":3081",
-    "DBConn": "user=postgres password=postgres dbname=centraldb sslmode=disable"
+    "DBConn": "user=central_client password=central_client dbname=centraldb sslmode=disable"
 }
