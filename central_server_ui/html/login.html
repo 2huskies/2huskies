@@ -55,6 +55,15 @@
         response: <span id="universities-list"></span><br>
         success: <span id="universities-success"></span><br>
 
+        <h1>faculties</h1>
+        <form id="faculties-form">
+            <input type="text" id="university-code"></input>
+            <input type="submit"></input>
+        </form>
+        <br>
+        response: <span id="faculties-list"></span><br>
+        success: <span id="faculties-success"></span><br>
+
         <script>
 	 function submit_login(e) {
 	     e.preventDefault(); //чтобы не рефрешило страницу 
@@ -185,12 +194,33 @@
 	     return false;
 	 };
 
+	 function submit_faculties(e) {
+	     e.preventDefault(); //чтобы не рефрешило страницу 
+	     var req = new XMLHttpRequest();
+	     var result;
+	     req.onreadystatechange = function () {
+		 if (this.readyState === 4) {
+                     if (this.status === 200) {
+                         $('#faculties-list').text(this.responseText);
+                         $('#faculties-success').text("success");
+                     } else {
+                         $('#faculties-success').text("failed " + this.responseText);
+                     }
+		 };
+	     };
+
+	     req.open('GET', '/faculties/'+$("#university-code").val(), true);
+	     req.send();
+	     return false;
+	 };
+
 	 $('#login-form').on('submit', submit_login);
 	 $('#abiturient-form').on('submit', submit_abiturient);
 	 $('#abiturient-scores-form').on('submit', submit_abiturient_scores);
 	 $('#subjects-form').on('submit', submit_subjects);
 	 $('#specialties-form').on('submit', submit_specialties);
 	 $('#universities-form').on('submit', submit_universities);
+	 $('#faculties-form').on('submit', submit_faculties);
         </script>
     </body>
 </html>

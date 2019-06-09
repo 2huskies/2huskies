@@ -148,3 +148,48 @@ where abiturient_id = %d order by j.id
 	log.Printf("%v", arr)
 	json.NewEncoder(w).Encode(arr)
 }
+
+func getFaculties(w http.ResponseWriter, r *http.Request) {
+	log.Printf("in getFaculties")
+	w.Header().Set("Content-Type", "application/json")
+	query := `
+SELECT 
+  f.ID,
+  f.name as name,
+  u.Name as university_name
+FROM faculty f
+  join university u on f.university_id = u.code
+where u.code = '%s' 
+order by f.id
+`
+	params := mux.Vars(r)
+	log.Printf("getFaculties params: %v", params)
+	code := params["code"]
+
+	rows, err := db.Query(fmt.Sprintf(query, code))
+	if err != nil {
+		http.Error(w, fmt.Sprintf("query: %s: %s", http.StatusText(500), err), 500)
+		log.Printf("query %s: %s", http.StatusText(500), err)
+		return
+	}
+	defer rows.Close()
+
+	arr := make([]*structs.Faculty, 0, 30)
+	for rows.Next() {
+		item := &structs.Faculty{UniversityCode: code}
+		err = rows.Scan(
+			&item.ID,
+			&item.Name,
+			&item.UniversityName,
+		)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("scan: %s: %s", http.StatusText(500), err), 500)
+			log.Printf("scan: %s: %s", http.StatusText(500), err)
+			return
+		}
+		arr = append(arr, item)
+	}
+
+	log.Printf("%v", arr)
+	json.NewEncoder(w).Encode(arr)
+}

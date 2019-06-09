@@ -167,6 +167,7 @@ func main() {
 	r.HandleFunc("/specialties", getSpecialties).Methods("GET")
 	r.HandleFunc("/universities", getUniversities).Methods("GET")
 	r.HandleFunc("/abiturient_scores/{id}", getAbiturientScores).Methods("GET")
+	r.HandleFunc("/faculties/{code}", getFaculties).Methods("GET")
 	//r.HandleFunc("/books", createAbiturient).Methods("POST")
 
 	log.Printf("listening: %s", conf.Bind)

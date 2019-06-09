@@ -22,6 +22,7 @@ type App struct {
 	SubjectsHandler         *SubjectsHandler
 	SpecialtiesHandler      *SpecialtiesHandler
 	UniversitiesHandler     *UniversitiesHandler
+	FacultiesHandler        *FacultiesHandler
 }
 
 var api *ApiClient
@@ -54,6 +55,9 @@ func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	case "universities":
 		a.UniversitiesHandler.ServeHTTP(res, req)
+		return
+	case "faculties":
+		a.FacultiesHandler.ServeHTTP(res, req)
 		return
 	case "html", "js", "css", "fonts":
 		http.FileServer(http.Dir(head)).ServeHTTP(res, req)
