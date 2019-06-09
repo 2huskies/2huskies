@@ -76,14 +76,12 @@ CREATE TABLE IF NOT EXISTS faculty (
 
 --Кол-во баллов ЕГЭ минимально необходимых для подачи документов
 CREATE TABLE IF NOT EXISTS pass_score (
-    university_id TEXT NOT NULL,
     subject_id    TEXT NOT NULL,
 	specialty_id  TEXT NOT NULL,
 	faculty_id INTEGER NOT NULL,
     pass_score    INTEGER CHECK (pass_score >= 0 AND pass_score <= 100),
 	
-    PRIMARY KEY (university_id, subject_id, specialty_id),
-    CONSTRAINT university_fkey FOREIGN KEY (university_id) REFERENCES  university(code) MATCH SIMPLE ON DELETE NO ACTION,
+    PRIMARY KEY (subject_id, specialty_id, faculty_id),
     CONSTRAINT subject_fkey    FOREIGN KEY (subject_id)    REFERENCES  subject(id)    MATCH SIMPLE ON DELETE NO ACTION,
 	CONSTRAINT specialty_fkey    FOREIGN KEY (specialty_id)    REFERENCES  specialty(code)    MATCH SIMPLE ON DELETE NO ACTION,
 	CONSTRAINT faculty_fkey    FOREIGN KEY (faculty_id)    REFERENCES  faculty(id)    MATCH SIMPLE ON DELETE NO ACTION
