@@ -151,7 +151,7 @@
                             <v-btn id="save-personal-data"
                                     color="primary"
                                     dark
-                                    href="/"
+                                    @click="showSavedAlert = true"
                             >
                                 Сохранить изменения
                             </v-btn>
@@ -184,6 +184,40 @@
             </v-toolbar>
 
     </v-app>
+
+    <div class="text-xs-center" v-if="showSavedAlert" v-cloak >
+        <v-dialog
+                v-model="showSavedAlert"
+                width="500"
+        >
+            <v-card>
+                <v-card-title
+                        class="headline grey lighten-2"
+                        primary-title
+                >
+                    Системное сообщение
+                </v-card-title>
+
+                <v-card-text>
+                    Данные сохранены!
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            color="primary"
+                            flat
+                            @click="showSavedAlert = false"
+                    >
+                        Понятно
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </div>
+
 </div>
 
 <script src="js/libs/vue.js"></script>

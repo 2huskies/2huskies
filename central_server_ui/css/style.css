@@ -25,6 +25,7 @@ input.data-input {width:100%;max-width:1048px;}
 .info-near-photo p {line-height: 33px;font-size:16px;font-family: 'Open Sans', sans-serif;margin:0;color:#000;}
 h4 {line-height: 33px;font-size:18px;font-weight:bold;font-family: "RalewayMedium", Arial, serif;margin:0;color:#000;}
 
+#show-saved-alert{position:absolute;margin:auto;top:200px;width:500px;height:200px;background:#eee;}
 
 
 
