@@ -15,8 +15,12 @@ var (
 )
 
 type App struct {
-	IndexHandler *IndexHandler
-	LoginHandler *LoginHandler
+	IndexHandler        *IndexHandler
+	LoginHandler        *LoginHandler
+	AbiturientHandler   *AbiturientHandler
+	SubjectsHandler     *SubjectsHandler
+	SpecialtiesHandler  *SpecialtiesHandler
+	UniversitiesHandler *UniversitiesHandler
 }
 
 var api *ApiClient
@@ -34,6 +38,18 @@ func (a *App) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	case "login":
 		a.LoginHandler.ServeHTTP(res, req)
+		return
+	case "abiturient":
+		a.AbiturientHandler.ServeHTTP(res, req)
+		return
+	case "subjects":
+		a.SubjectsHandler.ServeHTTP(res, req)
+		return
+	case "specialties":
+		a.SpecialtiesHandler.ServeHTTP(res, req)
+		return
+	case "universities":
+		a.UniversitiesHandler.ServeHTTP(res, req)
 		return
 	case "html", "js", "css", "fonts":
 		http.FileServer(http.Dir(head)).ServeHTTP(res, req)
@@ -57,6 +73,7 @@ func main() {
 		IndexHandler: new(IndexHandler),
 		LoginHandler: new(LoginHandler),
 	}
+	initCache()
 	log.Printf("listening on: %s", bind)
 	mime.AddExtensionType(".js", "text/javascript")
 	err = http.ListenAndServe(bind, a)

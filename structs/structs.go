@@ -27,3 +27,23 @@ type UserCheckResult struct {
 	Role         string `json:"role"`
 	AbiturientID int64  `json:"abiturient_id"`
 }
+
+type Subject struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type Specialty struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+type University struct {
+	Code      string `json:"code"`
+	Name      string `json:"name"`
+	Active    bool   `json:"active"`
+	URL       string `json:"url"`
+	ShortName string `json:"short_name"`
+	City      string `json:"city"`
+	Rate      int    `json:"rate"`
+}

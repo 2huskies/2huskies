@@ -52,6 +52,7 @@ func getAbiturients(w http.ResponseWriter, r *http.Request) {
 func getAbiturient(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
+	log.Printf("getAbiturient params: %v", params)
 	id, err := strconv.ParseInt(params["id"], 10, 64)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("%s: %s", http.StatusText(500), err), 500)
@@ -162,6 +163,9 @@ func main() {
 	r.HandleFunc("/abiturient", getAbiturients).Methods("GET")
 	r.HandleFunc("/abiturient/{id}", getAbiturient).Methods("GET")
 	r.HandleFunc("/verify_user", verifyUser).Methods("POST")
+	r.HandleFunc("/subjects", getSubjects).Methods("GET")
+	r.HandleFunc("/specialties", getSpecialties).Methods("GET")
+	r.HandleFunc("/universities", getUniversities).Methods("GET")
 	//r.HandleFunc("/books", createAbiturient).Methods("POST")
 
 	log.Printf("listening: %s", conf.Bind)

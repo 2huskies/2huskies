@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -59,6 +60,102 @@ func (a *ApiClient) verify_user(username string, password string) (*structs.User
 		return nil, err
 	}
 	return result, nil
+}
+
+func (a *ApiClient) getAbiturient(id int64) (*structs.Abiturient, error) {
+	req, err := a.NewRequest("GET", "abiturient/"+fmt.Sprintf("%d", id), nil)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("api_client getAbiturient: %s", req.URL.String())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	dec := json.NewDecoder(resp.Body)
+	result := &structs.Abiturient{}
+	err = dec.Decode(result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (a *ApiClient) getSubjects() ([]*structs.Subject, error) {
+	req, err := a.NewRequest("GET", "subjects", nil)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("api_client getSubjects: %s", req.URL.String())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	subjects := make([]*structs.Subject, 0, 30)
+	dec := json.NewDecoder(resp.Body)
+	err = dec.Decode(&subjects)
+	if err != nil {
+		return nil, err
+	}
+	return subjects, nil
+}
+
+func (a *ApiClient) getSpecialties() ([]*structs.Specialty, error) {
+	req, err := a.NewRequest("GET", "specialties", nil)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("api_client getSpecialties: %s", req.URL.String())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	specialties := make([]*structs.Specialty, 0, 30)
+	dec := json.NewDecoder(resp.Body)
+	err = dec.Decode(&specialties)
+	if err != nil {
+		return nil, err
+	}
+	return specialties, nil
+}
+
+func (a *ApiClient) getUniversities() ([]*structs.Specialty, error) {
+	req, err := a.NewRequest("GET", "universities", nil)
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("api_client getUniversities: %s", req.URL.String())
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Invalid response status, want: 200, got: %d", resp.StatusCode)
+	}
+	universities := make([]*structs.Specialty, 0, 30)
+	dec := json.NewDecoder(resp.Body)
+	err = dec.Decode(&universities)
+	if err != nil {
+		return nil, err
+	}
+	return universities, nil
 }
 
 func (a *ApiClient) NewRequest(method string, path string, body io.Reader) (*http.Request, error) {
