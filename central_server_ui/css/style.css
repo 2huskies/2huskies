@@ -14,7 +14,7 @@ body {font-family: "RalewayMedium", Arial, serif;font-size:16px;}
 .data-input {border:1px solid #999;border-radius: 5px;min-height:48px;padding:12px 20px;margin-right:20px;color:#666666;font-size:16px;}
 input.data-input {width:100%;max-width:1048px;}
 #phone-confirmation {margin-top:35px;font-size:14px;color:#0B8400;}
-#phone-confirmation img {margin-right:9px;}
+#phone-confirmation img {margin: 0 9px;}
 #save-personal-data {width:100%;margin:0;}
 #load-school-doc{}
 

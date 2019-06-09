@@ -83,7 +83,7 @@
                     <v-layout class="personal-data">
                         <v-flex sm3>
                             Контактный телефон<br>
-                            <div class="data-input">{{profile.contacts.phone}}</div>
+                            <input class="data-input" type="text" v-model="profile.contacts.phone">
                         </v-flex>
                         <v-flex sm3>
                             <div id="phone-confirmation">
@@ -92,7 +92,7 @@
                         </v-flex>
                         <v-flex sm3>
                             Email<br>
-                            <div class="data-input">{{profile.contacts.email}}</div>
+                            <input class="data-input" type="text" v-model="profile.contacts.email">
                         </v-flex>
                         <v-flex sm3>
                             <v-btn
